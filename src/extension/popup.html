@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="GoodTaberApp">
+<head>
+  <link rel="stylesheet" href="libs/bootstrap.min.css">
+  <link rel="stylesheet" href="libs/font-awesome.min.css">
+
+  <link rel="stylesheet" href="stylesheets/popup.css">
+
+  <script src="libs/jquery.min.js"></script>
+  <script src="libs/angular.min.js"></script>
+  <script src="libs/lunr.min.js"></script>
+</head>
+<body>
+  <div class="container-fluid" ng-controller="TabListCtrl">
+    <div id="search-bar">
+      <input placeholder="Search..." ng-model="query" ng-change="filter()">
+    </div>
+    <div class="row">
+      <div class="col-xs-2">
+        <button class="btn btn-default btn-sm btn-block">Search</button>
+        <button class="btn btn-default btn-sm btn-block" ng-click="sortByName()">Name</button>
+        <button class="btn btn-default btn-sm btn-block">Time</button>
+      </div>
+      <div class="col-xs-10 container-fluid">
+        <div>
+          <div ng-repeat="tab in tabs track by $index">
+            <div class="tab-detail truncate">
+              <button class="btn btn-link tab-tag" ng-click="tagClicked(tab.id)" ng-class="tab.class"><i class="fa fa-tag"></i></button>
+              {{tab.title}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/popup.js"></script>
+</body>
+</html>

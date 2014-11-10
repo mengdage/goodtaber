@@ -1,0 +1,61 @@
+html, body {
+    width: 600px;
+}
+
+body {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    /*position: relative;*/
+}
+
+/*.tag-bar {
+    background: blue;
+    width: 10px;
+    height: 10px;
+    display: inline;
+}*/
+
+.tab-detail {
+    border: 1px #adadad solid;
+    margin-bottom: 5px;
+    padding: 2px 7px;
+    border-radius: 3px;
+}
+
+.tab-tag {
+    font-size: 0.8em;
+    margin: 0;
+    padding: 0;
+    color: #adadad;
+}
+
+.tag-1 {
+    color: blue;
+}
+
+.tag-2 {
+    color: green;
+}
+
+.tag-3 {
+    color: red;
+}
+
+.tag-4 {
+    color: yellow;
+}
+
+.tag-5 {
+    color: orange;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*#search-bar {
+    position: absolute;
+    top: -10px;
+}*/
