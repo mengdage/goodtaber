@@ -1,9 +1,24 @@
 angular
-  .module('GoodTaberApp', [])
+  .module('GoodTaberApp', ['ui.sortable'])
   .controller('TabListCtrl', ['$scope', 'tabs', function($scope, tabs) {
     var NUMBER_TAG_CLASSES = 5;
 
     $scope.tabs = tabs.getTabs();
+    // $scope.tabs = [{
+    //   id:1,
+    //   title: 'a'
+    // }, {
+    //   id: 2,
+    //   title: 'b'
+    // }];
+    $scope.sortableOptions = {
+      update: function(e, ui) {
+        console.log($scope.tabs);
+      },
+      stop: function(e, ui) {
+        console.log($scope.tabs);
+      }
+    };
 
     $scope.tagClicked = function(id) {
       tabs.update(id, {
@@ -19,6 +34,7 @@ angular
 
     $scope.filter = function() {
       tabs.filter($scope.query);
+      
     };
 
   }])
@@ -31,7 +47,6 @@ angular
         this.ref('id');
       });
       this.scanTabs();
-      
     };
     Tabs.prototype.get = function(id) {
       for (var i = 0; i < this.tabs.length; ++i) {
@@ -66,14 +81,16 @@ angular
       compareFunction = compareFunction || function(a, b) {
         return a.id > b.id;
       };
-      this.tabs.sort(compareFunction);
+      this.filteredTabs.sort(compareFunction);
     };
     Tabs.prototype.filter = function(query) {
-      var result = this.index.search(query) || [];
-      this.emptyFilteredTabs();
-      for (var i = 0; i < result.length; ++i) {
-        var tab = this.get(result[i].ref);
-        this.pushFilteredTabs(tab);
+      var result = this.index.search(query);
+      if (result.length !== 0) {
+        this.emptyFilteredTabs();
+        for (var i = 0; i < result.length; ++i) {
+          var tab = this.get(result[i].ref);
+          this.pushFilteredTabs(tab);
+        }
       }
     };
     Tabs.prototype.emptyFilteredTabs = function() {
