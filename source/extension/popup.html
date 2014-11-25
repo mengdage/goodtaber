@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="stylesheets/popup.css">
 
   <script src="libs/jquery.min.js"></script>
+  <script src="libs/jquery-ui.min.js"></script>
   <script src="libs/angular.min.js"></script>
+  <script src="libs/sortable.min.js"></script>
   <script src="libs/lunr.min.js"></script>
 </head>
 <body>
@@ -22,7 +24,7 @@
         <button class="btn btn-default btn-sm btn-block">Time</button>
       </div>
       <div class="col-xs-10 container-fluid">
-        <div>
+        <div ui-sortable="sortTabOptions" ng-model="tabs" id="main">
           <div ng-repeat="tab in tabs track by $index">
             <div class="tab-detail truncate">
               <button class="btn btn-link tab-tag" ng-click="tagClicked(tab.id)" ng-class="tab.class"><i class="fa fa-tag"></i></button>

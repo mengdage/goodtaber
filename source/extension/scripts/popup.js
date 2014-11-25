@@ -1,9 +1,22 @@
 angular
-  .module('GoodTaberApp', [])
+  .module('GoodTaberApp', ['ui.sortable'])
   .controller('TabListCtrl', ['$scope', 'tabs', function($scope, tabs) {
     var NUMBER_TAG_CLASSES = 5;
 
     $scope.tabs = tabs.getTabs();
+    $scope.sortTabOptions = {
+      stop: function(e, ui) {
+        tabs.reorder();
+        console.log(e);
+        console.log(ui);
+      },
+      change: function() {
+        var log = $scope.tabs.map(function(i) {
+          return i.id;
+        }).join(', ');
+        console.log(log);
+      }
+    };
 
     $scope.tagClicked = function(id) {
       tabs.update(id, {
@@ -18,7 +31,11 @@ angular
     };
 
     $scope.filter = function() {
-      tabs.filter($scope.query);
+      if ($scope.query) {
+        tabs.filter($scope.query);
+      } else {
+        tabs.clearFilters();
+      }
     };
 
   }])
@@ -31,7 +48,6 @@ angular
         this.ref('id');
       });
       this.scanTabs();
-      
     };
     Tabs.prototype.get = function(id) {
       for (var i = 0; i < this.tabs.length; ++i) {
@@ -44,7 +60,9 @@ angular
     };
     Tabs.prototype.scanTabs = function() {
       var self = this;
-      chrome.tabs.query({}, function(tabs) {
+      chrome.tabs.query({
+        windowId: chrome.windows.WINDOW_ID_CURRENT
+      }, function(tabs) {
         $rootScope.$apply(
           angular.forEach(tabs, function(tab) {
             var t = {
@@ -66,14 +84,16 @@ angular
       compareFunction = compareFunction || function(a, b) {
         return a.id > b.id;
       };
-      this.tabs.sort(compareFunction);
+      this.filteredTabs.sort(compareFunction);
     };
     Tabs.prototype.filter = function(query) {
-      var result = this.index.search(query) || [];
-      this.emptyFilteredTabs();
-      for (var i = 0; i < result.length; ++i) {
-        var tab = this.get(result[i].ref);
-        this.pushFilteredTabs(tab);
+      var result = this.index.search(query);
+      if (result.length !== 0) {
+        this.emptyFilteredTabs();
+        for (var i = 0; i < result.length; ++i) {
+          var tab = this.get(result[i].ref);
+          this.pushFilteredTabs(tab);
+        }
       }
     };
     Tabs.prototype.emptyFilteredTabs = function() {
@@ -84,10 +104,24 @@ angular
     Tabs.prototype.pushFilteredTabs = function(element) {
       this.filteredTabs.push(element);
     };
-    // Tabs.prototype.extendFilteredTabs = function(array) {
-    //   for (var i = 0; i < array.length; ++i) {
-    //     this.filteredTabs.push(array[i]);
-    //   }
-    // };
+    Tabs.prototype.clearFilters = function() {
+      this.emptyFilteredTabs();
+      for (var i = 0; i < this.tabs.length; ++i) {
+        this.pushFilteredTabs(this.tabs[i]);
+      }
+    };
+    Tabs.prototype.reorder = function() {
+      if (this.tabs.length !== this.filteredTabs.length) {
+        throw new Error("Can't reorder now");
+      }
+      for (var i = 0; i < this.tabs.length; ++i) {
+        var tab = this.tabs[i];
+        var newIndex = this.filteredTabs.indexOf(tab);
+        chrome.tabs.move(tab.id, {
+          index: newIndex
+        });
+      }
+      this.tabs = this.filteredTabs.slice();
+    };
     return new Tabs();
   }]);
