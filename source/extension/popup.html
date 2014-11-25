@@ -15,7 +15,10 @@
 <body>
   <div class="container-fluid" ng-controller="TabListCtrl">
     <div id="search-bar">
-      <input placeholder="Search..." ng-model="query" ng-change="filter()">
+      <div class="input-group">
+        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+        <input placeholder="Search..." ng-model="query" ng-change="filter()" class="form-control">
+      </div>
     </div>
     <div class="row">
       <div class="col-xs-2">
