@@ -56,10 +56,19 @@ body {
 }
 
 #main {
+	writing-mode: vertical-lr;
+	-webkit-column-count:4;
     overflow-x: scroll;
+    overflow-y: scroll;
     height: 300px;
+	min-width:450px;
+	max-width: 800px;
 }
 
 #search-bar {
     margin-bottom: 10px;
+}
+
+.col-xs-10 {
+    overflow-y: scroll;
 }
