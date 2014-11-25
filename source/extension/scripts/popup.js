@@ -4,19 +4,17 @@ angular
     var NUMBER_TAG_CLASSES = 5;
 
     $scope.tabs = tabs.getTabs();
-    // $scope.tabs = [{
-    //   id:1,
-    //   title: 'a'
-    // }, {
-    //   id: 2,
-    //   title: 'b'
-    // }];
-    $scope.sortableOptions = {
-      update: function(e, ui) {
-        console.log($scope.tabs);
-      },
+    $scope.sortTabOptions = {
       stop: function(e, ui) {
-        console.log($scope.tabs);
+        tabs.reorder();
+        console.log(e);
+        console.log(ui);
+      },
+      change: function() {
+        var log = $scope.tabs.map(function(i) {
+          return i.id;
+        }).join(', ');
+        console.log(log);
       }
     };
 
@@ -33,8 +31,11 @@ angular
     };
 
     $scope.filter = function() {
-      tabs.filter($scope.query);
-      
+      if ($scope.query) {
+        tabs.filter($scope.query);
+      } else {
+        tabs.clearFilters();
+      }
     };
 
   }])
@@ -59,7 +60,9 @@ angular
     };
     Tabs.prototype.scanTabs = function() {
       var self = this;
-      chrome.tabs.query({}, function(tabs) {
+      chrome.tabs.query({
+        windowId: chrome.windows.WINDOW_ID_CURRENT
+      }, function(tabs) {
         $rootScope.$apply(
           angular.forEach(tabs, function(tab) {
             var t = {
@@ -101,10 +104,24 @@ angular
     Tabs.prototype.pushFilteredTabs = function(element) {
       this.filteredTabs.push(element);
     };
-    // Tabs.prototype.extendFilteredTabs = function(array) {
-    //   for (var i = 0; i < array.length; ++i) {
-    //     this.filteredTabs.push(array[i]);
-    //   }
-    // };
+    Tabs.prototype.clearFilters = function() {
+      this.emptyFilteredTabs();
+      for (var i = 0; i < this.tabs.length; ++i) {
+        this.pushFilteredTabs(this.tabs[i]);
+      }
+    };
+    Tabs.prototype.reorder = function() {
+      if (this.tabs.length !== this.filteredTabs.length) {
+        throw new Error("Can't reorder now");
+      }
+      for (var i = 0; i < this.tabs.length; ++i) {
+        var tab = this.tabs[i];
+        var newIndex = this.filteredTabs.indexOf(tab);
+        chrome.tabs.move(tab.id, {
+          index: newIndex
+        });
+      }
+      this.tabs = this.filteredTabs.slice();
+    };
     return new Tabs();
   }]);
