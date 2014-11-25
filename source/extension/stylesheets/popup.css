@@ -60,7 +60,6 @@ body {
     height: 300px;
 }
 
-/*#search-bar {
-    position: absolute;
-    top: -10px;
-}*/
+#search-bar {
+    margin-bottom: 10px;
+}
