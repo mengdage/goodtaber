@@ -24,7 +24,7 @@
         <button class="btn btn-default btn-sm btn-block">Time</button>
       </div>
       <div class="col-xs-10 container-fluid">
-        <div ui-sortable ng-model="tabs" id="main">
+        <div ui-sortable="sortTabOptions" ng-model="tabs" id="main">
           <div ng-repeat="tab in tabs track by $index">
             <div class="tab-detail truncate">
               <button class="btn btn-link tab-tag" ng-click="tagClicked(tab.id)" ng-class="tab.class"><i class="fa fa-tag"></i></button>

@@ -55,6 +55,11 @@ body {
   text-overflow: ellipsis;
 }
 
+#main {
+    overflow-x: scroll;
+    height: 300px;
+}
+
 /*#search-bar {
     position: absolute;
     top: -10px;
