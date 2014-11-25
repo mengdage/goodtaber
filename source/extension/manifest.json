@@ -3,7 +3,11 @@
   "name": "My Extension",
   "version": "0.0.1",
   "browser_action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+	"default_icon": {
+		"19": "img/icon_48.png"
+	}
+
   },
   "permissions": [
     "tabs"
@@ -18,5 +22,9 @@
 			  "default": "Alt+L"
 		  }
 	  }
+  },
+
+  "icons": {
+	  "48": "img/icon_48.png"
   }
 }

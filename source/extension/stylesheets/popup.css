@@ -57,12 +57,11 @@ body {
 
 #main {
 	writing-mode: vertical-lr;
-	-webkit-column-count:4;
+	-webkit-column-count:6;
     overflow-x: scroll;
     overflow-y: scroll;
-    height: 300px;
-	min-width:450px;
-	max-width: 800px;
+    height: 320px;
+	width:1800px;
 }
 
 #search-bar {
