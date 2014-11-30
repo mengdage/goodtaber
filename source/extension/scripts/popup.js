@@ -18,12 +18,6 @@ angular
       }
     };
 
-    $scope.tagClicked = function(id) {
-      tabs.update(id, {
-        class: 'tag-2'
-      });
-    };
-
     $scope.active = function(tab) {
       chrome.tabs.update(tab.id, {
         active: true
