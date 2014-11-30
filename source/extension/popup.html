@@ -30,7 +30,6 @@
         <div ui-sortable="sortTabOptions" ng-model="tabs" id="main">
           <div ng-repeat="tab in tabs track by $index" ng-click="active(tab)">
             <div class="tab-detail truncate">
-              <button class="btn btn-link tab-tag" ng-click="tagClicked(tab.id)" ng-class="tab.class"><i class="fa fa-tag"></i></button>
               {{tab.title}}
             </div>
           </div>
