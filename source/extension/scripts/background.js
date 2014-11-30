@@ -8,13 +8,17 @@ function reportNumTabs() {
 			a.tabs&&(b+=a.tabs.length)
 		}
 		);
-		updataBadgeText(b)
+		updataBadgeText(b);
 	});
 }
 reportNumTabs();
-chrome.tabs.onCreated.addListener(function (a) {reportNumTabs()});
-chrome.tabs.onRemoved.addListener(function (a) {reportNumTabs()});
-chrome.commands.onCommand.addListener(function(command) {
-	alert('command: ' + command);
+chrome.tabs.onCreated.addListener(function (a) {
+	reportNumTabs();
 });
+chrome.tabs.onRemoved.addListener(function (a) {
+	reportNumTabs();
+});
+// chrome.commands.onCommand.addListener(function(command) {
+// 	alert('command: ' + command);
+// });
 
