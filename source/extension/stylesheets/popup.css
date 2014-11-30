@@ -55,7 +55,24 @@ body {
   text-overflow: ellipsis;
 }
 
-/*#search-bar {
-    position: absolute;
-    top: -10px;
-}*/
+#main {
+	writing-mode: vertical-lr;
+	-webkit-column-count:6;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    height: 320px;
+	width:1800px;
+}
+
+#search-bar {
+    margin-bottom: 10px;
+}
+
+.col-xs-10 {
+    overflow-y: scroll;
+}
+
+.close-tab {
+    margin: 0;
+    padding: 0;
+}

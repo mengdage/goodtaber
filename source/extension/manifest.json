@@ -3,9 +3,28 @@
   "name": "My Extension",
   "version": "0.0.1",
   "browser_action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+	"default_icon": {
+		"19": "img/icon_48.png"
+	}
+
   },
   "permissions": [
     "tabs"
-  ]
+  ],
+  "background": {
+	  "scripts": ["scripts/background.js"]
+  },
+
+  "commands":{
+	  "_execute_browser_action":{
+		  "suggested_key": {
+			  "default": "Alt+L"
+		  }
+	  }
+  },
+
+  "icons": {
+	  "48": "img/icon_48.png"
+  }
 }
