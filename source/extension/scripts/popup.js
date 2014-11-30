@@ -24,6 +24,12 @@ angular
       });
     };
 
+    $scope.active = function(tab) {
+      chrome.tabs.update(tab.id, {
+        active: true
+      });
+    };
+
     $scope.sortByName = function() {
       tabs.sort(function(a, b) {
         return a.title.toLowerCase() > b.title.toLowerCase();
