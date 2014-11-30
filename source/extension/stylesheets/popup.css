@@ -71,3 +71,8 @@ body {
 .col-xs-10 {
     overflow-y: scroll;
 }
+
+.close-tab {
+    margin: 0;
+    padding: 0;
+}

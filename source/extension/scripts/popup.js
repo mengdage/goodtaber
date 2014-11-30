@@ -24,6 +24,11 @@ angular
       });
     };
 
+    $scope.close = function(tab) {
+      // chrome.tabs.remove(tab.id, function() {});
+      tabs.close(tab);
+    };
+
     $scope.sortByName = function() {
       tabs.sort(function(a, b) {
         return a.title.toLowerCase() > b.title.toLowerCase();
@@ -122,6 +127,12 @@ angular
         });
       }
       this.tabs = this.filteredTabs.slice();
+    };
+    Tabs.prototype.close = function(tab) {
+      // this.tabs.indexOf(tab)
+      this.tabs.pop(this.tabs.indexOf(tab));
+      this.filteredTabs.pop(this.filteredTabs.indexOf(tab));
+      chrome.tabs.remove(tab.id);
     };
     return new Tabs();
   }]);

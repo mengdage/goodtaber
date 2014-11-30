@@ -28,9 +28,10 @@
       </div>
       <div class="col-xs-10 container-fluid">
         <div ui-sortable="sortTabOptions" ng-model="tabs" id="main">
-          <div ng-repeat="tab in tabs track by $index" ng-click="active(tab)">
+          <div ng-repeat="tab in tabs track by $index">
             <div class="tab-detail truncate">
-              {{tab.title}}
+              <button type="button" class="btn btn-link close-tab" ng-click="close(tab)">x</button>
+              <span ng-click="active(tab)">{{tab.title}}</span>
             </div>
           </div>
         </div>
