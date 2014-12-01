@@ -20,23 +20,26 @@
         <input placeholder="Search..." ng-model="query" ng-change="filter()" class="form-control">
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-xs-2">
         <button class="btn btn-default btn-sm btn-block">Search</button>
         <button class="btn btn-default btn-sm btn-block" ng-click="sortByName()">Name</button>
         <button class="btn btn-default btn-sm btn-block">Time</button>
-      </div>
-      <div class="col-xs-10 container-fluid">
+      </div> -->
+      <div class="container-fluid" id="main-wrapper">
         <div ui-sortable="sortTabOptions" ng-model="tabs" id="main">
+        <!-- <div ng-model="tabs" id="main"> -->
           <div ng-repeat="tab in tabs track by $index">
             <div class="tab-detail truncate">
-              <button type="button" class="btn btn-link close-tab" ng-click="close(tab)">x</button>
-              <span ng-click="active(tab)">{{tab.title}}</span>
+              <button type="button" class="btn btn-link button-icon" ng-click="close(tab)">x</button>
+              <button type="button" class="btn btn-link button-icon show-tab" ng-click="active(tab)"><i class="fa fa-caret-right"></i></button>
+              <!-- <i class="fa fa-play" ng-click="active(tab)"></i> -->
+              {{tab.title}}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 
   <script src="scripts/popup.js"></script>
