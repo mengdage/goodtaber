@@ -71,7 +71,7 @@ Tabs.removeTab = function(windowId, tabId) {
 Tabs.init();
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  console.log('onUpdated handler');
+  // console.log('onUpdated handler');
   Tabs.updateTab(tab);
   notifyUpdate();
 });
