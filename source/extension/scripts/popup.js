@@ -7,6 +7,11 @@ angular
         $scope.$apply($scope.tabs = tabs);
       });
     }
+    function getTabsByTime() {
+      tabs.getTabsByTime().then(function(tabs) {
+        $scope.$apply($scope.tabs = tabs);
+      });
+    }
 
     getTabs();
 
@@ -15,17 +20,6 @@ angular
     });
 
     $scope.sortTabOptions = {
-      // stop: function(e, ui) {
-      //   tabs.reorder();
-      //   console.log(e);
-      //   console.log(ui);
-      // },
-      // change: function() {
-      //   var log = $scope.tabs.map(function(i) {
-      //     return i.id;
-      //   }).join(', ');
-      //   console.log(log);
-      // }
       stop: function(e, ui) {
         tabs.reorder($scope.tabs);
       }
@@ -41,6 +35,11 @@ angular
 
     $scope.filter = function() {
       getTabs($scope.query);
+    };
+
+    $scope.tabTimeApiUsable = tabs.recentTimeApiEnabled();
+    $scope.filterByTime = function() {
+      getTabsByTime();
     };
 
   }])
@@ -64,6 +63,29 @@ angular
       });
       return deferred.promise();
     };
+    Tabs.prototype.getTabsByTime = function() {
+      var self = this;
+      var tabsPromise = this.getTabs();
+      var recentTabsDeferred = $.Deferred();
+      chrome.widget.getRecentTabs({id: 0}, function(tabIds) {
+        recentTabsDeferred.resolve(tabIds);
+      });
+      var recentTabsPromise = recentTabsDeferred.promise();
+      return $.when(tabsPromise, recentTabsPromise)
+        .then(function(tabs, tabIds) {
+          var result = [];
+          for (var i = 0; i < tabIds.length; ++i) {
+            for (var j = 0; j < tabs.length; ++j) {
+				console.log(tabs[j].id,tabIds[i].id);
+              if (tabs[j].id === tabIds[i].id) {
+                result.push(tabs[j]);
+                break;
+              }
+            }
+          }
+          return result;
+        });
+    };
     Tabs.prototype.close = function(tab) {
       this.background.removeTab(tab.id);
     };
@@ -76,6 +98,8 @@ angular
       }
       this.background.reorderTab(tabs);
     };
-
+    Tabs.prototype.recentTimeApiEnabled = function() {
+      return !!chrome.widget && !!chrome.widget.getRecentTabs;
+    };
     return new Tabs();
   }]);
