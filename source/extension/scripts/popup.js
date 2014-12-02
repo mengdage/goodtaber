@@ -71,27 +71,10 @@ angular
         recentTabsDeferred.resolve(tabIds);
       });
       var recentTabsPromise = recentTabsDeferred.promise();
-      // tabsPromise.then(function(tabs) {
-      //   recentTabsPromise.then(function(tabIds) {
-      //     for (var i = 0; i < tabIds.length; ++i) {
-      //       var tabId = tabIds[i];
-      //       if (tabs[tabId]) {
-      //         tabs[tabId].newIndex = i;
-      //       }
-      //     }
-      //     self.background.reorderTab(tabs);
-      //   });
-      // });
-      $.when(tabsPromise, recentTabsPromise)
+      return $.when(tabsPromise, recentTabsPromise)
         .then(function(tabs, tabIds) {
-          for (var i = 0; i < tabIds.length; ++i) {
-            var tabId = tabIds[i];
-            if (tabs[tabId]) {
-              tabs[tabId].newIndex = i;
-            }
-          }
-          self.background.reorderTab(tabs);
-          return self.getTabs();
+          tabs.reverse();
+          return tabs;
         });
     };
     Tabs.prototype.close = function(tab) {
