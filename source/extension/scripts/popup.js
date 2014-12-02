@@ -73,8 +73,16 @@ angular
       var recentTabsPromise = recentTabsDeferred.promise();
       return $.when(tabsPromise, recentTabsPromise)
         .then(function(tabs, tabIds) {
-          tabs.reverse();
-          return tabs;
+          var result = [];
+          for (var i = 0; i < tabIds.length; ++i) {
+            for (var j = 0; j < tabs.length; ++j) {
+              if (tabs[j].id === tabIds[i]) {
+                result.push(tabs[j]);
+                break;
+              }
+            }
+          }
+          return result;
         });
     };
     Tabs.prototype.close = function(tab) {
