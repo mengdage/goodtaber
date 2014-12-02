@@ -76,7 +76,8 @@ angular
           var result = [];
           for (var i = 0; i < tabIds.length; ++i) {
             for (var j = 0; j < tabs.length; ++j) {
-              if (tabs[j].id === tabIds[i]) {
+				console.log(tabs[j].id,tabIds[i].id);
+              if (tabs[j].id === tabIds[i].id) {
                 result.push(tabs[j]);
                 break;
               }

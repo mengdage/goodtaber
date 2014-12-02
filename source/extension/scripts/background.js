@@ -131,6 +131,6 @@ chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
 });
 chrome.tabs.onActiveChanged.addListener(function (tabId, selectInfo) {
 	chrome.widget.getRecentTabs({id:tabId}, function(rtabs){});
-	alert(tabId);
+	//alert(tabId);
 	//chrome.widget.record(tabId);
 });
