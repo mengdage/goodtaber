@@ -20,12 +20,12 @@
         <input placeholder="Search..." ng-model="query" ng-change="filter()" class="form-control">
       </div>
     </div>
-    <!-- <div class="row">
+    <div class="row">
       <div class="col-xs-2">
-        <button class="btn btn-default btn-sm btn-block">Search</button>
-        <button class="btn btn-default btn-sm btn-block" ng-click="sortByName()">Name</button>
-        <button class="btn btn-default btn-sm btn-block">Time</button>
-      </div> -->
+        <!-- <button class="btn btn-default btn-sm btn-block">Search</button> -->
+        <!-- <button class="btn btn-default btn-sm btn-block" ng-click="sortByName()">Name</button> -->
+        <button class="btn btn-default btn-sm btn-block" ng-disabled="!tabTimeApiUsable" ng-click="filterByTime()">Time</button>
+      </div>
       <div class="container-fluid" id="main-wrapper">
         <div ui-sortable="sortTabOptions" ng-model="tabs" id="main">
         <!-- <div ng-model="tabs" id="main"> -->
@@ -39,7 +39,7 @@
           </div>
         </div>
       </div>
-    <!-- </div> -->
+    </div>
   </div>
 
   <script src="scripts/popup.js"></script>
