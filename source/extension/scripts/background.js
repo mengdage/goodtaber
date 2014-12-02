@@ -125,3 +125,12 @@ function reorderTab(tabs) {
     });
   }
 }
+
+chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
+	chrome.widget.getRecentTabs({id:(-1*tabId)}, function(rtabs){});
+});
+chrome.tabs.onActiveChanged.addListener(function (tabId, selectInfo) {
+	chrome.widget.getRecentTabs({id:tabId}, function(rtabs){});
+	alert(tabId);
+	//chrome.widget.record(tabId);
+});
