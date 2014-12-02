@@ -10,10 +10,11 @@
 
   },
   "permissions": [
-    "tabs"
+    "tabs",
+  "widget"
   ],
   "background": {
-	  "scripts": ["scripts/background.js"]
+	  "scripts": ["libs/jquery.min.js", "scripts/background.js"]
   },
 
   "commands":{

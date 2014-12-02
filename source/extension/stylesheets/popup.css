@@ -22,33 +22,6 @@ body {
     border-radius: 3px;
 }
 
-.tab-tag {
-    font-size: 0.8em;
-    margin: 0;
-    padding: 0;
-    color: #adadad;
-}
-
-.tag-1 {
-    color: blue;
-}
-
-.tag-2 {
-    color: green;
-}
-
-.tag-3 {
-    color: red;
-}
-
-.tag-4 {
-    color: yellow;
-}
-
-.tag-5 {
-    color: orange;
-}
-
 .truncate {
   white-space: nowrap;
   overflow: hidden;
@@ -57,22 +30,20 @@ body {
 
 #main {
 	writing-mode: vertical-lr;
-	-webkit-column-count:6;
-    overflow-x: scroll;
-    overflow-y: scroll;
+	-webkit-column-count: 6;
     height: 320px;
-	width:1800px;
+	width: 1800px;
+}
+
+#main-wrapper {
+    overflow-y: scroll;
 }
 
 #search-bar {
     margin-bottom: 10px;
 }
 
-.col-xs-10 {
-    overflow-y: scroll;
-}
-
-.close-tab {
+.button-icon {
     margin: 0;
     padding: 0;
 }
