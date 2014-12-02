@@ -10,7 +10,8 @@
 
   },
   "permissions": [
-    "tabs"
+    "tabs",
+  "widget"
   ],
   "background": {
 	  "scripts": ["libs/jquery.min.js", "scripts/background.js"]
