@@ -12,6 +12,11 @@ angular
         $scope.$apply($scope.tabs = tabs);
       });
     }
+    function getTabsByName() {
+      tabs.getTabsByName().then(function(tabs) {
+        $scope.$apply($scope.tabs = tabs);
+      });
+    }
 
     getTabs();
 
@@ -40,6 +45,10 @@ angular
     $scope.tabTimeApiUsable = tabs.recentTimeApiEnabled();
     $scope.filterByTime = function() {
       getTabsByTime();
+    };
+
+    $scope.filterByName = function() {
+      getTabsByName();
     };
 
   }])
@@ -86,6 +95,15 @@ angular
           return result;
         });
     };
+    Tabs.prototype.getTabsByName = function() {
+      var self = this;
+      var tabsPromise = this.getTabs();
+      return tabsPromise.then(function(tabs) {
+        return tabs.sort(function(a, b) {
+          return a.title < b.title;
+        });
+      });
+    };
     Tabs.prototype.close = function(tab) {
       this.background.removeTab(tab.id);
     };
@@ -101,5 +119,6 @@ angular
     Tabs.prototype.recentTimeApiEnabled = function() {
       return !!chrome.widget && !!chrome.widget.getRecentTabs;
     };
+
     return new Tabs();
   }]);
