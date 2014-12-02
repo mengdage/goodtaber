@@ -7,6 +7,11 @@ angular
         $scope.$apply($scope.tabs = tabs);
       });
     }
+    function getTabsByTime() {
+      tabs.getTabsByTime().then(function(tabs) {
+        $scope.$apply($scope.tabs = tabs);
+      });
+    }
 
     getTabs();
 
@@ -32,7 +37,10 @@ angular
       getTabs($scope.query);
     };
 
-    $scope.tabTimeApiUsable = false;
+    $scope.tabTimeApiUsable = tabs.recentTimeApiEnabled();
+    $scope.filterByTime = function() {
+      getTabsByTime();
+    };
 
   }])
   .factory('tabs', ['$rootScope', function($rootScope) {
@@ -55,6 +63,27 @@ angular
       });
       return deferred.promise();
     };
+    Tabs.prototype.getTabsByTime = function() {
+      var self = this;
+      var tabsPromise = this.getTabs();
+      var recentTabsDeferred = $.Deferred();
+      chrome.widget.getRecentTabs({id: 0}, function(tabIds) {
+        recentTabsDeferred.resolve(tabIds);
+      });
+      var recentTabsPromise = recentTabsDeferred.promise();
+      tabsPromise.then(function(tabs) {
+        recentTabsPromise.then(function(tabIds) {
+          for (var i = 0; i < tabIds.length; ++i) {
+            var tabId = tabIds[i];
+            if (tabs[tabId]) {
+              tabs[tabId].newIndex = i;
+            }
+          }
+          self.background.reorderTab(tabs);
+        });
+      });
+      
+    };
     Tabs.prototype.close = function(tab) {
       this.background.removeTab(tab.id);
     };
@@ -67,6 +96,8 @@ angular
       }
       this.background.reorderTab(tabs);
     };
-
+    Tabs.prototype.recentTimeApiEnabled = function() {
+      return !!chrome.widget && !!chrome.widget.getRecentTabs;
+    };
     return new Tabs();
   }]);
