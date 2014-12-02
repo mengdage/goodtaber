@@ -15,17 +15,6 @@ angular
     });
 
     $scope.sortTabOptions = {
-      // stop: function(e, ui) {
-      //   tabs.reorder();
-      //   console.log(e);
-      //   console.log(ui);
-      // },
-      // change: function() {
-      //   var log = $scope.tabs.map(function(i) {
-      //     return i.id;
-      //   }).join(', ');
-      //   console.log(log);
-      // }
       stop: function(e, ui) {
         tabs.reorder($scope.tabs);
       }
@@ -42,6 +31,8 @@ angular
     $scope.filter = function() {
       getTabs($scope.query);
     };
+
+    $scope.tabTimeApiUsable = false;
 
   }])
   .factory('tabs', ['$rootScope', function($rootScope) {
