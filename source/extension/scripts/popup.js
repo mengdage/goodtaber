@@ -100,7 +100,7 @@ angular
       var tabsPromise = this.getTabs();
       return tabsPromise.then(function(tabs) {
         return tabs.sort(function(a, b) {
-          return a.title < b.title;
+          return a.title > b.title;
         });
       });
     };
