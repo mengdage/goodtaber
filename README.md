@@ -1,7 +1,7 @@
 # Introduction #
 
 GoodTaber works as a manager for you numerous chrome tabs. The goal is to make you navigation through tabs easily and efficiently.
-![GUI](wiki/images/GUI.png?raw=true "Optional Title")
+![GUI](wiki/images/GoodTaber.png?raw=true "GoodTaber")
 # Design #
 
 GoodTaber consists of two components, the foreground popup and the background.
