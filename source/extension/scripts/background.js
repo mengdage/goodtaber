@@ -1,3 +1,4 @@
+// Update badge number
 function updataBadgeText(a){
   chrome.browserAction.setBadgeText({text: ""+a});
 }
@@ -12,16 +13,14 @@ function reportNumTabs() {
   });
 }
 reportNumTabs();
+// when tabs created or removed, update badge number
 chrome.tabs.onCreated.addListener(function (a) {
   reportNumTabs();
 });
 chrome.tabs.onRemoved.addListener(function (a) {
   reportNumTabs();
 });
-// chrome.commands.onCommand.addListener(function(command) {
-//  alert('command: ' + command);
-// });
-
+// end of Update badge number
 
 
 var Tabs = function() {};

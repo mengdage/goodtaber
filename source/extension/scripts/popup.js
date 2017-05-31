@@ -1,78 +1,89 @@
 angular
   .module('GoodTaberApp', ['ui.sortable'])
-  .controller('TabListCtrl', ['$scope', 'tabs', function($scope, tabs) {
+  .controller('TabListCtrl', TabListCtrl)
+  .factory('TabsService', TabsService);
 
-    function getTabs(query) {
-      tabs.getTabs(query).then(function(tabs) {
-        $scope.$apply($scope.tabs = tabs);
-      });
-    }
-    function getTabsByTime() {
-      tabs.getTabsByTime().then(function(tabs) {
-        $scope.$apply($scope.tabs = tabs);
-      });
-    }
-    function getTabsByName() {
-      tabs.getTabsByName().then(function(tabs) {
-        $scope.$apply($scope.tabs = tabs);
-      });
-    }
+TabListCtrl.$inject = ['$scope', 'TabsService'];
+function TabListCtrl($scope, TabsService) {
+  console.log(TabsService);
 
+  $scope.tabs = [];
+  $scope.query = "";
+
+  function getTabs(query) {
+    TabsService.getTabs(query).then(function(tabs) {
+      console.log(tabs);
+      $scope.$apply($scope.tabs = tabs);
+    });
+  }
+
+  function getTabsByTime() {
+    TabsService.getTabsByTime().then(function(tabs) {
+      $scope.$apply($scope.tabs = tabs);
+    });
+  }
+
+  function getTabsByName() {
+    TabsService.getTabsByName().then(function(tabs) {
+      $scope.$apply($scope.tabs = tabs);
+    });
+  }
+
+  getTabs();
+
+  $scope.$on('updateTabs', function() {
     getTabs();
+  });
 
-    $scope.$on('updateTabs', function() {
-      getTabs();
+  $scope.sortTabOptions = {
+    stop: function(e, ui) {
+      TabsService.reorder($scope.tabs);
+    }
+  };
+
+  $scope.close = function(tab) {
+    TabsService.close(tab);
+    console.log($scope.tabs.length);
+  };
+
+  $scope.active = function(tab) {
+    TabsService.active(tab);
+  };
+
+  $scope.filter = function() {
+    getTabs($scope.query);
+  };
+
+  $scope.tabTimeApiUsable = TabsService.recentTimeApiEnabled();
+  $scope.filterByTime = function() {
+    getTabsByTime();
+  };
+
+  $scope.filterByName = function() {
+    getTabsByName();
+  };
+
+};
+
+TabsService.$inject = ['$rootScope'];
+function TabsService($rootScope) {
+  var Tabs = function() {
+    chrome.runtime.onMessage.addListener(function() {
+      $rootScope.$broadcast('updateTabs');
     });
 
-    $scope.sortTabOptions = {
-      stop: function(e, ui) {
-        tabs.reorder($scope.tabs);
-      }
-    };
-
-    $scope.close = function(tab) {
-      tabs.close(tab);
-    };
-
-    $scope.active = function(tab) {
-      tabs.active(tab);
-    };
-
-    $scope.filter = function() {
-      getTabs($scope.query);
-    };
-
-    $scope.tabTimeApiUsable = tabs.recentTimeApiEnabled();
-    $scope.filterByTime = function() {
-      getTabsByTime();
-    };
-
-    $scope.filterByName = function() {
-      getTabsByName();
-    };
-
-  }])
-  .factory('tabs', ['$rootScope', function($rootScope) {
-    var Tabs = function() {
-      this.background = chrome.extension.getBackgroundPage();
-      chrome.runtime.onMessage.addListener(function() {
-        $rootScope.$broadcast('updateTabs');
-      });
-    };
-    Tabs.prototype.getTabs = function(query) {
+    this.background = chrome.extension.getBackgroundPage();
+    this.getTabs = function(query) {
       var self = this;
       var deferred = $.Deferred();
-      chrome.windows.getCurrent({
-        populate: false,
-      }, function(window) {
-        var tabs = self.background.queryTab(window.id, {
-          contains: query
-        });
+      chrome.windows.getCurrent({ populate: false, }, function(window) {
+        var tabs = self.background.queryTab(window.id, { contains: query });
         deferred.resolve(tabs);
       });
       return deferred.promise();
     };
-    Tabs.prototype.getTabsByTime = function() {
+
+    this.getTabsByTime = function() {
       var self = this;
       var tabsPromise = this.getTabs();
       var recentTabsDeferred = $.Deferred();
@@ -85,7 +96,6 @@ angular
           var result = [];
           for (var i = 0; i < tabIds.length; ++i) {
             for (var j = 0; j < tabs.length; ++j) {
-				console.log(tabs[j].id,tabIds[i].id);
               if (tabs[j].id === tabIds[i].id) {
                 result.push(tabs[j]);
                 break;
@@ -95,7 +105,7 @@ angular
           return result;
         });
     };
-    Tabs.prototype.getTabsByName = function() {
+    this.getTabsByName = function() {
       var self = this;
       var tabsPromise = this.getTabs();
       return tabsPromise.then(function(tabs) {
@@ -104,21 +114,22 @@ angular
         });
       });
     };
-    Tabs.prototype.close = function(tab) {
+    this.close = function(tab) {
       this.background.removeTab(tab.id);
     };
-    Tabs.prototype.active = function(tab) {
+    this.active = function(tab) {
       this.background.activeTab(tab.id);
     };
-    Tabs.prototype.reorder = function(tabs) {
+    this.reorder = function(tabs) {
       for (var i = 0; i < tabs.length; ++i) {
         tabs[i].newIndex = i;
       }
       this.background.reorderTab(tabs);
     };
-    Tabs.prototype.recentTimeApiEnabled = function() {
+    this.recentTimeApiEnabled = function() {
       return !!chrome.widget && !!chrome.widget.getRecentTabs;
     };
 
-    return new Tabs();
-  }]);
+  };
+  return new Tabs();
+}

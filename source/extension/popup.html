@@ -21,20 +21,20 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-2">
-        <!-- <button class="btn btn-default btn-sm btn-block">Search</button> -->
+      <div class="col-xs-3">
         <button class="btn btn-default btn-sm btn-block" ng-click="filterByName()">Name</button>
         <button class="btn btn-default btn-sm btn-block" ng-disabled="!tabTimeApiUsable" ng-click="filterByTime()">Time</button>
       </div>
-      <div class="container-fluid" id="main-wrapper">
+      <div class="col-xs-9" id="main-wrapper">
         <div ui-sortable="sortTabOptions" ng-model="tabs" id="main">
         <!-- <div ng-model="tabs" id="main"> -->
           <div ng-repeat="tab in tabs track by $index">
-            <div class="tab-detail truncate">
-              <button type="button" class="btn btn-link button-icon" ng-click="close(tab)">x</button>
-              <button type="button" class="btn btn-link button-icon show-tab" ng-click="active(tab)"><i class="fa fa-caret-right"></i></button>
-              <!-- <i class="fa fa-play" ng-click="active(tab)"></i> -->
-              {{tab.title}}
+            <div class="tab-detail">
+              <!-- <button type="button" class="btn btn-link button-icon" ng-click="close(tab)">x</button> -->
+              <div type="button" class="button-close" ng-click="close(tab)">x</div>
+              <!-- <button type="button" class="btn btn-link button-icon show-tab" ng-click="active(tab)"><i class="fa fa-caret-right"></i> -->
+              <div type="button" class="button-open truncate" ng-click="active(tab)">
+              {{tab.title}} </div>
             </div>
           </div>
         </div>
